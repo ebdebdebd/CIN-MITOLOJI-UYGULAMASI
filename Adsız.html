@@ -1,0 +1,472 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <title></title>
+  <meta name="Generator" content="Cocoa HTML Writer">
+  <meta name="CocoaVersion" content="2575.7">
+  <style type="text/css">
+    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+  </style>
+</head>
+<body>
+<p class="p1">&lt;!DOCTYPE html&gt;</p>
+<p class="p1">&lt;html lang="tr"&gt;</p>
+<p class="p1">&lt;head&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;meta charset="UTF-8"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;title&gt;Antik Çin Mitolojisi: İnteraktif Keşif Aracı&lt;/title&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;script src="https://cdn.tailwindcss.com"&gt;&lt;/script&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;script src="https://cdn.jsdelivr.net/npm/chart.js"&gt;&lt;/script&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;link rel="preconnect" href="https://fonts.googleapis.com"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;link rel="preconnect" href="https://fonts.gstatic.com" crossorigin&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;family=Noto+Serif+TC:wght@400;700&amp;display=swap" rel="stylesheet"&gt;</p>
+<p class="p2"><span class="Apple-converted-space">    </span></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;!-- Chosen Palette: Antik Parşömen (Arka Plan: #FDF6E3, Metin: #3C3633, Başlıklar: #7A3E3E, Vurgu: #E0A75E) --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;!-- Application Structure Plan: Uygulama, dört ana interaktif bölümden oluşan sekmeli bir yapı kullanır: 1) Zaman Tüneli: Kronolojik bağlam sunar. 2) Panteon: Karakterleri (hükümdarlar, kahramanlar, tanrılar, canavarlar) filtreleyerek keşfetmeyi sağlar. 3) Kozmoloji: Temel kavramları (Yin-Yang, Ejderha/Fenghuang) karşılaştırmalı olarak inceler. 4) Hanedanlıklar: Xia, Shang ve Zhou'nun temel özelliklerini görselleştirmelerle karşılaştırır. Bu yapı, kullanıcının doğrusal bir okuma yerine ilgi alanına göre bilgiyi keşfetmesine olanak tanır ve karmaşık ilişkileri daha anlaşılır kılar. --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;!-- Visualization &amp; Content Choices: 1) Zaman Tüneli (HTML/CSS): Kronolojik akışı göstermek için. 2) Panteon Filtreleme (JS/HTML): Karakterleri kategorilere ayırarak kolay erişim sağlamak için. 3) Karakter Özellikleri (Chart.js Radar Chart): Niteliksel verileri (örn. kahramanlık, bilgelik) görselleştirmek için. 4) Hanedanlık Karşılaştırması (Chart.js Bar Chart): Shang ve Zhou arasındaki dini/politik değişimleri vurgulamak için. 5) Kavram Karşılaştırması (HTML Tablo): Ejderha ve Fenghuang arasındaki farkları netleştirmek için. Bu seçimler, metin ağırlıklı raporu etkileşimli ve sindirilebilir bir deneyime dönüştürmeyi hedefler. --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. --&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;style&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>body {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>background-color: #FDF6E3;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>color: #3C3633;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>font-family: 'Inter', sans-serif;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>h1, h2, h3, .font-noto {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>font-family: 'Noto Serif TC', serif;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>color: #7A3E3E;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.nav-link {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>transition: all 0.3s ease;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>border-bottom: 2px solid transparent;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.nav-link.active, .nav-link:hover {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>border-bottom-color: #E0A75E;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>color: #7A3E3E;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.content-section {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>display: none;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.content-section.active {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>display: block;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.card {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>background-color: #FFFBF5;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>border: 1px solid #E0A75E;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>transition: transform 0.3s ease, box-shadow 0.3s ease;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.card:hover {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>transform: translateY(-5px);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.filter-btn {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>background-color: #FFFBF5;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>border: 1px solid #E0A75E;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>color: #7A3E3E;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>transition: all 0.3s ease;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.filter-btn.active, .filter-btn:hover {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>background-color: #E0A75E;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>color: #FFFBF5;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.chart-container {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>position: relative;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>width: 100%;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>max-width: 500px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>margin-left: auto;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>margin-right: auto;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>height: 300px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>max-height: 400px;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>@media (min-width: 768px) {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>.chart-container {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>height: 400px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/style&gt;</p>
+<p class="p1">&lt;/head&gt;</p>
+<p class="p1">&lt;body class="antialiased"&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="container mx-auto px-4 py-8"&gt;</p>
+<p class="p2"><span class="Apple-converted-space">        </span></p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;header class="text-center mb-12"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;h1 class="text-4xl md:text-5xl font-bold mb-2"&gt;Antik Çin Mitolojisi&lt;/h1&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;p class="text-lg text-gray-600"&gt;Efsaneler, Tanrılar ve Hanedanlıklar Arasında İnteraktif Bir Yolculuk&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/header&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;nav class="flex justify-center border-b-2 border-yellow-800/20 mb-8"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;button class="nav-link active text-lg px-4 py-2" onclick="showSection('panteon')"&gt;Panteon&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;button class="nav-link text-lg px-4 py-2" onclick="showSection('zamanTuneli')"&gt;Zaman Tüneli&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;button class="nav-link text-lg px-4 py-2" onclick="showSection('hanedanliklar')"&gt;Hanedanlıklar&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;button class="nav-link text-lg px-4 py-2" onclick="showSection('kozmoloji')"&gt;Kozmoloji&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/nav&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;main&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;!-- Panteon Bölümü --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;section id="panteon" class="content-section active"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="text-center mb-8"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;h2 class="text-3xl font-bold mb-2"&gt;Panteon Keşfi&lt;/h2&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;p class="max-w-3xl mx-auto text-gray-600"&gt;Bu bölümde, Çin mitolojisinin zengin karakter kadrosunu keşfedin. Hükümdarlar, kahramanlar, tanrılar ve canavarlar arasında filtreleme yaparak ilgilendiğiniz figürlerin detaylı hikayelerine ve özelliklerine ulaşabilirsiniz.&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;div id="filter-container" class="flex flex-wrap justify-center gap-2 mb-8"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;button class="filter-btn active px-4 py-2 rounded-full" onclick="filterCharacters('all')"&gt;Tümü&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;button class="filter-btn px-4 py-2 rounded-full" onclick="filterCharacters('hukumdar')"&gt;Hükümdarlar&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;button class="filter-btn px-4 py-2 rounded-full" onclick="filterCharacters('kahraman')"&gt;Kahramanlar&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;button class="filter-btn px-4 py-2 rounded-full" onclick="filterCharacters('tanri')"&gt;Tanrılar ve Tanrıçalar&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;button class="filter-btn px-4 py-2 rounded-full" onclick="filterCharacters('canavar')"&gt;Canavarlar ve İblisler&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;div id="character-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;!-- Karakter Kartları JS ile buraya eklenecek --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;div id="character-details" class="mt-8 p-6 bg-white/50 rounded-lg shadow-inner" style="display: none;"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;!-- Karakter Detayları ve Gemini API hikaye alanı JS ile buraya eklenecek --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/section&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;!-- Zaman Tüneli Bölümü --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;section id="zamanTuneli" class="content-section"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="text-center mb-12"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;h2 class="text-3xl font-bold mb-2"&gt;Mitten Tarihe Zaman Tüneli&lt;/h2&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;p class="max-w-3xl mx-auto text-gray-600"&gt;Çin medeniyetinin efsanevi başlangıcından ilk tarihsel hanedanlıklara uzanan kronolojik yolculuğa çıkın. Önemli dönemler ve figürler hakkında bilgi almak için öğelerin üzerine gelin veya tıklayın.&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="relative wrap overflow-hidden p-10 h-full"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div class="border-2-2 absolute border-opacity-20 border-yellow-700 h-full border" style="left: 50%"&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;!-- Timeline items will be added here --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div class="mb-8 flex justify-between items-center w-full right-timeline"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div class="order-1 w-5/12"&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div class="z-20 flex items-center order-1 bg-yellow-800 shadow-xl w-8 h-8 rounded-full"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;h1 class="mx-auto font-semibold text-lg text-white"&gt;1&lt;/h1&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div class="order-1 bg-amber-100 rounded-lg shadow-xl w-5/12 px-6 py-4"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;h3 class="mb-3 font-bold text-gray-800 text-xl"&gt;Üç Hükümdar ve Beş İmparator (M.Ö. ~2852-2070)&lt;/h3&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;p class="text-sm leading-snug tracking-wide text-gray-900 text-opacity-100"&gt;Medeniyetin kurucuları olarak kabul edilen efsanevi liderler. Fu Xi, Nüwa, Shennong ve Sarı İmparator gibi figürler tarım, tıp ve yazıyı icat etti.&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                     </span>&lt;div class="mb-8 flex justify-between flex-row-reverse items-center w-full left-timeline"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div class="order-1 w-5/12"&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div class="z-20 flex items-center order-1 bg-yellow-800 shadow-xl w-8 h-8 rounded-full"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;h1 class="mx-auto text-white font-semibold text-lg"&gt;2&lt;/h1&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div class="order-1 bg-red-100 rounded-lg shadow-xl w-5/12 px-6 py-4"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;h3 class="mb-3 font-bold text-gray-800 text-xl"&gt;Xia Hanedanı (M.Ö. ~2070-1600)&lt;/h3&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;p class="text-sm leading-snug tracking-wide text-gray-900 text-opacity-100"&gt;Çin'in ilk hanedanı olarak kabul edilir. Kurucusu Büyük Yu, büyük sel felaketini kontrol altına almasıyla tanınır. Arkeolojik olarak Erlitou kültürü ile ilişkilendirilir.&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div class="mb-8 flex justify-between items-center w-full right-timeline"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div class="order-1 w-5/12"&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div class="z-20 flex items-center order-1 bg-yellow-800 shadow-xl w-8 h-8 rounded-full"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;h1 class="mx-auto font-semibold text-lg text-white"&gt;3&lt;/h1&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div class="order-1 bg-amber-100 rounded-lg shadow-xl w-5/12 px-6 py-4"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;h3 class="mb-3 font-bold text-gray-800 text-xl"&gt;Shang Hanedanı (M.Ö. ~1600-1046)&lt;/h3&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;p class="text-sm leading-snug tracking-wide text-gray-900 text-opacity-100"&gt;Tarihsel varlığı kanıtlanmış ilk hanedan. Kehanet kemiği yazıları ve yüce tanrı Shangdi'ye tapınma ile karakterizedir. Ata tapıncılığı merkezdeydi.&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div class="mb-8 flex justify-between flex-row-reverse items-center w-full left-timeline"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div class="order-1 w-5/12"&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div class="z-20 flex items-center order-1 bg-yellow-800 shadow-xl w-8 h-8 rounded-full"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;h1 class="mx-auto text-white font-semibold text-lg"&gt;4&lt;/h1&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div class="order-1 bg-red-100 rounded-lg shadow-xl w-5/12 px-6 py-4"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;h3 class="mb-3 font-bold text-gray-800 text-xl"&gt;Zhou Hanedanı (M.Ö. ~1046-256)&lt;/h3&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;p class="text-sm leading-snug tracking-wide text-gray-900 text-opacity-100"&gt;Shang'ı yıkarak "Cennetin Mandası" (Tianming) kavramını getirdi. Bu, yönetimin erdeme dayalı olduğu fikrini ortaya koydu ve Çin felsefesini derinden etkiledi.&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/section&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;!-- Hanedanlıklar Bölümü --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;section id="hanedanliklar" class="content-section"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                 </span>&lt;div class="text-center mb-12"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;h2 class="text-3xl font-bold mb-2"&gt;Hanedanlıkların Karakteri&lt;/h2&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;p class="max-w-3xl mx-auto text-gray-600"&gt;Shang ve Zhou hanedanlıkları arasındaki temel dini ve politik değişimleri interaktif bir grafikle inceleyin. Bu dönem, Çin'in yönetim anlayışında teokrasiden daha ahlaki bir meşruiyete geçişi temsil eder.&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="chart-container"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;canvas id="dynastyChart"&gt;&lt;/canvas&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/section&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;!-- Kozmoloji Bölümü --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;section id="kozmoloji" class="content-section"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="text-center mb-12"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;h2 class="text-3xl font-bold mb-2"&gt;Kozmoloji ve Semboller&lt;/h2&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;p class="max-w-3xl mx-auto text-gray-600"&gt;Çin kültürünün temel taşlarını oluşturan kozmolojik kavramları ve uğurlu yaratıkları keşfedin. Ejderha ve Fenghuang'ın sembolik anlamlarını ve Yin-Yang felsefesiyle olan ilişkilerini karşılaştırın.&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="bg-white/50 p-6 rounded-lg shadow-inner"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;h3 class="text-2xl font-bold text-center mb-4"&gt;Ejderha (Loong) ve Anka Kuşu (Fenghuang) Karşılaştırması&lt;/h3&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div class="overflow-x-auto"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;table class="w-full text-left border-collapse"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;thead&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;tr class="bg-yellow-800/10"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;th class="p-3 font-bold uppercase text-gray-600 border border-gray-300"&gt;Özellik&lt;/th&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;th class="p-3 font-bold uppercase text-gray-600 border border-gray-300"&gt;🐉 Çin Ejderhası (Loong)&lt;/th&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;th class="p-3 font-bold uppercase text-gray-600 border border-gray-300"&gt;🐦 Fenghuang (Anka Kuşu)&lt;/th&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;/tr&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;/thead&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;tbody&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;tr class="hover:bg-gray-200/50"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;td class="p-3 font-bold border border-gray-200"&gt;Sembolizm&lt;/td&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;td class="p-3 border border-gray-200"&gt;Güç, şans, refah, bilgelik, imparatorluk otoritesi.&lt;/td&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;td class="p-3 border border-gray-200"&gt;Uyum, erdem, barış, onur, imparatoriçe sembolü.&lt;/td&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;/tr&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;tr class="hover:bg-gray-200/50"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;td class="p-3 font-bold border border-gray-200"&gt;Yin-Yang&lt;/td&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;td class="p-3 border border-gray-200"&gt;Yang (eril) prensibini temsil eder.&lt;/td&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;td class="p-3 border border-gray-200"&gt;Yin (dişil) prensibini temsil eder.&lt;/td&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;/tr&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;tr class="hover:bg-gray-200/50"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;td class="p-3 font-bold border border-gray-200"&gt;Kültürel Rol&lt;/td&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;td class="p-3 border border-gray-200"&gt;Koruyucu, yağmurun hükümdarı, ulusal kimliğin sembolü.&lt;/td&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;td class="p-3 border border-gray-200"&gt;Uğurlu alamet, evlilik uyumunun sembolü.&lt;/td&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;/tr&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;tr class="hover:bg-gray-200/50"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;td class="p-3 border border-gray-200" colspan="2"&gt;Birlikte, imparator ve imparatoriçenin uyumlu birliğini ve dolayısıyla kozmik dengeyi temsil ederler.&lt;/td&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;/tr&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;/tbody&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/table&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/section&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/main&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;script&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const characterData = {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>fuxi: { name: 'Fu Xi', type: 'hukumdar', icon: '📜', summary: 'İnsanlığa yazıyı (trigramlar), avlanmayı ve aile yaşamını öğreten kültür kahramanı. Genellikle Nüwa ile birlikte yılan kuyruklu olarak tasvir edilir.', attributes: { 'Yaratıcılık': 9, 'Bilgelik': 10, 'Düzen': 8, 'Doğa': 7, 'Savaş': 2 } },</p>
+<p class="p1"><span class="Apple-converted-space">            </span>nuwa: { name: 'Nüwa', type: 'hukumdar', icon: '💎', summary: 'İnsanlığı kilden yaratan ana tanrıça. Kırılan gökyüzünü beş renkli taşla onararak dünyayı felaketten kurtarmıştır.', attributes: { 'Yaratıcılık': 10, 'Koruyuculuk': 10, 'Şefkat': 9, 'Güç': 8, 'Düzen': 7 } },</p>
+<p class="p1"><span class="Apple-converted-space">            </span>shennong: { name: 'Shennong', type: 'hukumdar', icon: '🌿', summary: 'İlahi Çiftçi. İnsanlara tarımı ve bitkisel tıbbı öğretti. Yüzlerce bitkiyi tadarak şifalı olanları keşfettiğine inanılır.', attributes: { 'Şifa': 10, 'Tarım': 10, 'Bilgelik': 8, 'Fedakarlık': 9, 'Doğa': 9 } },</p>
+<p class="p1"><span class="Apple-converted-space">            </span>huangdi: { name: 'Sarı İmparator', type: 'hukumdar', icon: '👑', summary: 'Tüm Çin halkının atası kabul edilen birleştirici lider. Savaş tanrısı Chiyou\'yu yenmiş, pusula ve takvim gibi birçok yeniliğe öncülük etmiştir.', attributes: { 'Liderlik': 10, 'Yenilikçilik': 9, 'Savaş': 9, 'Bilgelik': 8, 'Yönetim': 10 } },</p>
+<p class="p1"><span class="Apple-converted-space">            </span>buyukyu: { name: 'Büyük Yu', type: 'kahraman', icon: '🌊', summary: 'Büyük sel felaketini 13 yıl süren çabayla nehirleri derinleştirerek kontrol altına alan ve Xia Hanedanı\'nı kuran büyük kahraman.', attributes: { 'Fedakarlık': 10, 'Azim': 10, 'Liderlik': 9, 'Mühendislik': 9, 'Yönetim': 8 } },</p>
+<p class="p1"><span class="Apple-converted-space">            </span>houyi: { name: 'Hou Yi', type: 'kahraman', icon: '🏹', summary: 'Dünyayı yakan on güneşten dokuzunu oklarıyla vuran efsanevi okçu. Ayrıca insanlığı tehdit eden birçok canavarı da yok etmiştir.', attributes: { 'Kahramanlık': 10, 'Okçuluk': 10, 'Güç': 9, 'Koruyuculuk': 8, 'Tragedya': 7 } },</p>
+<p class="p1"><span class="Apple-converted-space">            </span>shangdi: { name: 'Shangdi', type: 'tanri', icon: '☁️', summary: 'Shang Hanedanı\'nın yüce tanrısı. Savaş, hasat ve hava durumu gibi olayları kontrol eden, görünmez ama her şeye gücü yeten bir varlık.', attributes: { 'Otorite': 10, 'Kader': 9, 'Doğa Kontrolü': 8, 'Ulaşılmazlık': 9, 'Ata Ruhu': 7 } },</p>
+<p class="p1"><span class="Apple-converted-space">            </span>guanyin: { name: 'Guan Yin', type: 'tanri', icon: '🌸', summary: 'Merhamet ve şefkat tanrıçası. Dünyadaki tüm acıları duyduğuna ve yardıma ihtiyacı olanlara koştuğuna inanılır. Budist kökenli olmasına rağmen Çin\'de çok popülerdir.', attributes: { 'Şefkat': 10, 'Merhamet': 10, 'Koruyuculuk': 9, 'Şifa': 8, 'Bilgelik': 7 } },</p>
+<p class="p1"><span class="Apple-converted-space">            </span>chiyou: { name: 'Chiyou', type: 'canavar', icon: '⚔️', summary: 'Sarı İmparator\'un baş düşmanı olan savaşçı lider. Metal silahların mucidi olarak bilinir ve savaşta sis gibi büyülü hileler kullanmıştır.', attributes: { 'Savaş': 10, 'Yıkıcılık': 9, 'Kaos': 8, 'Teknoloji': 7, 'İsyan': 9 } },</p>
+<p class="p1"><span class="Apple-converted-space">            </span>gonggong: { name: 'Gong Gong', type: 'canavar', icon: '🌊', summary: 'Asi su tanrısı. Yıkıcı seller yaratmış ve göğü taşıyan Buzhou Dağı\'nı kırarak kozmik bir felakete yol açmıştır.', attributes: { 'Yıkıcılık': 10, 'Kaos': 10, 'Öfke': 9, 'Su Gücü': 9, 'İsyan': 8 } },</p>
+<p class="p1"><span class="Apple-converted-space">            </span>loong: { name: 'Çin Ejderhası', type: 'canavar', icon: '🐉', summary: 'Güç, şans ve refahın sembolü olan uğurlu yaratık. İmparatorluk otoritesini ve Yang (eril) enerjiyi temsil eder. Yağmuru kontrol eder.', attributes: { 'Güç': 10, 'Uğur': 10, 'Bilgelik': 8, 'Koruyuculuk': 9, 'Otorite': 9 } },</p>
+<p class="p1"><span class="Apple-converted-space">            </span>fenghuang: { name: 'Fenghuang', type: 'canavar', icon: '🐦', summary: 'Uyum, erdem ve barışın sembolü olan uğurlu anka kuşu. İmparatoriçeyi ve Yin (dişil) enerjiyi temsil eder. Görülmesi barış alametidir.', attributes: { 'Uyum': 10, 'Erdem': 10, 'Güzellik': 9, 'Uğur': 9, 'Zarafet': 8 } },</p>
+<p class="p1"><span class="Apple-converted-space">        </span>};</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>const grid = document.getElementById('character-grid');</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const detailsContainer = document.getElementById('character-details');</p>
+<p class="p1"><span class="Apple-converted-space">        </span>let activeChart = null;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>function showSection(sectionId) {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>document.querySelectorAll('.content-section').forEach(section =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>section.classList.remove('active');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>});</p>
+<p class="p1"><span class="Apple-converted-space">            </span>document.getElementById(sectionId).classList.add('active');</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>document.querySelectorAll('.nav-link').forEach(link =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>link.classList.remove('active');</p>
+<p class="p1"><span class="Apple-converted-space">                </span>if (link.getAttribute('onclick').includes(sectionId)) {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>link.classList.add('active');</p>
+<p class="p1"><span class="Apple-converted-space">                </span>}</p>
+<p class="p1"><span class="Apple-converted-space">            </span>});</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>function filterCharacters(type) {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>grid.innerHTML = '';</p>
+<p class="p1"><span class="Apple-converted-space">            </span>detailsContainer.style.display = 'none';</p>
+<p class="p1"><span class="Apple-converted-space">            </span>if(activeChart) {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>activeChart.destroy();</p>
+<p class="p1"><span class="Apple-converted-space">                </span>activeChart = null;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>Object.keys(characterData).forEach(key =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const char = characterData[key];</p>
+<p class="p1"><span class="Apple-converted-space">                </span>if (type === 'all' || char.type === type) {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>const card = document.createElement('div');</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>card.className = 'card p-4 rounded-lg text-center cursor-pointer';</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>card.setAttribute('data-key', key);</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>card.innerHTML = `&lt;div class="text-4xl mb-2"&gt;${char.icon}&lt;/div&gt;&lt;h3 class="font-noto font-semibold"&gt;${char.name}&lt;/h3&gt;`;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>card.onclick = () =&gt; showCharacterDetails(key);</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>grid.appendChild(card);</p>
+<p class="p1"><span class="Apple-converted-space">                </span>}</p>
+<p class="p1"><span class="Apple-converted-space">            </span>});</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>document.querySelectorAll('.filter-btn').forEach(btn =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>btn.classList.remove('active');</p>
+<p class="p1"><span class="Apple-converted-space">                </span>if (btn.getAttribute('onclick').includes(type)) {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>btn.classList.add('active');</p>
+<p class="p1"><span class="Apple-converted-space">                </span>}</p>
+<p class="p1"><span class="Apple-converted-space">            </span>});</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>async function generateMyth(characterName) {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const storyContainer = document.getElementById('story-container');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>storyContainer.innerHTML = `&lt;p class="text-center text-gray-500"&gt;Hikaye oluşturuluyor...&lt;/p&gt;`;</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>let chatHistory = [];</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const prompt = `Çin mitolojisinden ${characterName} karakteri hakkında yaratıcı, kısa bir hikaye yaz.`;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>chatHistory.push({ role: "user", parts: [{ text: prompt }] });</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>const payload = { contents: chatHistory };</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const apiKey = "";</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>try {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const response = await fetch(apiUrl, {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>method: 'POST',</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>headers: { 'Content-Type': 'application/json' },</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>body: JSON.stringify(payload)</p>
+<p class="p1"><span class="Apple-converted-space">                </span>});</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                </span>const result = await response.json();</p>
+<p class="p1"><span class="Apple-converted-space">                </span>if (result.candidates &amp;&amp; result.candidates.length &gt; 0 &amp;&amp;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>result.candidates[0].content &amp;&amp; result.candidates[0].content.parts &amp;&amp;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>result.candidates[0].content.parts.length &gt; 0) {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>const text = result.candidates[0].content.parts[0].text;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>storyContainer.innerHTML = `&lt;p class="text-gray-700"&gt;${text}&lt;/p&gt;`;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>} else {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>storyContainer.innerHTML = `&lt;p class="text-red-500"&gt;Hikaye oluşturulamadı. Lütfen tekrar deneyin.&lt;/p&gt;`;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>}</p>
+<p class="p1"><span class="Apple-converted-space">            </span>} catch (error) {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>storyContainer.innerHTML = `&lt;p class="text-red-500"&gt;Bir hata oluştu. Lütfen tekrar deneyin.&lt;/p&gt;`;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>console.error("API Hatası:", error);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><span class="Apple-converted-space">        </span></p>
+<p class="p1"><span class="Apple-converted-space">        </span>function showCharacterDetails(key) {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const char = characterData[key];</p>
+<p class="p1"><span class="Apple-converted-space">            </span>detailsContainer.style.display = 'block';</p>
+<p class="p1"><span class="Apple-converted-space">            </span>detailsContainer.innerHTML = `</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="grid md:grid-cols-2 gap-6 items-center mb-6"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;h2 class="text-3xl font-bold mb-2"&gt;${char.icon} ${char.name}&lt;/h2&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;p class="text-gray-700"&gt;${char.summary}&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;button onclick="generateMyth('${char.name}')" class="mt-4 px-4 py-2 bg-[#E0A75E] text-white rounded-full shadow hover:bg-[#c29150] transition-colors"&gt;Efsane Oluştur ✨&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div class="chart-container" style="height:300px;"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;canvas id="attributeChart"&gt;&lt;/canvas&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;div id="story-container" class="mt-6 p-4 border border-yellow-800/20 rounded-lg bg-white/70"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;p class="text-gray-500 text-center"&gt;Oluşturulan hikaye burada belirecek.&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>`;</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>if(activeChart) {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>activeChart.destroy();</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>const ctx = document.getElementById('attributeChart').getContext('2d');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>activeChart = new Chart(ctx, {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>type: 'radar',</p>
+<p class="p1"><span class="Apple-converted-space">                </span>data: {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>labels: Object.keys(char.attributes),</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>datasets: [{</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>label: char.name,</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>data: Object.values(char.attributes),</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>fill: true,</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>backgroundColor: 'rgba(224, 167, 94, 0.2)',</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>borderColor: 'rgb(224, 167, 94)',</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>pointBackgroundColor: 'rgb(224, 167, 94)',</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>pointBorderColor: '#fff',</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>pointHoverBackgroundColor: '#fff',</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>pointHoverBorderColor: 'rgb(224, 167, 94)'</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>}]</p>
+<p class="p1"><span class="Apple-converted-space">                </span>},</p>
+<p class="p1"><span class="Apple-converted-space">                </span>options: {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>maintainAspectRatio: false,</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>scales: {</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>r: {</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>angleLines: { color: 'rgba(122, 62, 62, 0.2)' },</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>grid: { color: 'rgba(122, 62, 62, 0.2)' },</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>pointLabels: { font: { size: 12 }, color: '#3C3633' },</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>ticks: {</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>color: '#7A3E3E',</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>backdropColor: '#FDF6E3',</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>stepSize: 2</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>},</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>suggestedMin: 0,</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>suggestedMax: 10</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>},</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>plugins: {</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>legend: {</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>display: false</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">                </span>}</p>
+<p class="p1"><span class="Apple-converted-space">            </span>});</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>detailsContainer.scrollIntoView({ behavior: 'smooth', block: 'center' });</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>function createDynastyChart() {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const ctx = document.getElementById('dynastyChart').getContext('2d');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>new Chart(ctx, {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>type: 'bar',</p>
+<p class="p1"><span class="Apple-converted-space">                </span>data: {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>labels: ['Teokrasi Seviyesi', 'Ahlaki Meşruiyet', 'İnsan Kurbanı', 'Bürokrasi'],</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>datasets: [</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>{</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>label: 'Shang Hanedanı',</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>data: [9, 3, 8, 2],</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>backgroundColor: 'rgba(122, 62, 62, 0.7)',</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>borderColor: 'rgba(122, 62, 62, 1)',</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>borderWidth: 1</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>},</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>{</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>label: 'Zhou Hanedanı',</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>data: [4, 9, 2, 7],</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>backgroundColor: 'rgba(224, 167, 94, 0.7)',</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>borderColor: 'rgba(224, 167, 94, 1)',</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>borderWidth: 1</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>]</p>
+<p class="p1"><span class="Apple-converted-space">                </span>},</p>
+<p class="p1"><span class="Apple-converted-space">                </span>options: {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>indexAxis: 'y',</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>maintainAspectRatio: false,</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>scales: {</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>x: {</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>beginAtZero: true,</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>max: 10,</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>grid: { color: 'rgba(122, 62, 62, 0.1)' }</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>},</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>y: {</p>
+<p class="p1"><span class="Apple-converted-space">                           </span>grid: { display: false }</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>},</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>plugins: {</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>title: {</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>display: true,</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>text: 'Shang ve Zhou Hanedanlıkları Arasındaki Değişim',</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>font: { size: 16, family: "'Noto Serif TC', serif" },</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>color: '#7A3E3E'</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>},</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>tooltip: {</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>callbacks: {</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>label: function(context) {</p>
+<p class="p1"><span class="Apple-converted-space">                                    </span>let label = context.dataset.label || '';</p>
+<p class="p1"><span class="Apple-converted-space">                                    </span>if (label) {</p>
+<p class="p1"><span class="Apple-converted-space">                                        </span>label += ': ';</p>
+<p class="p1"><span class="Apple-converted-space">                                    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">                                    </span>if (context.parsed.x !== null) {</p>
+<p class="p1"><span class="Apple-converted-space">                                        </span>label += context.parsed.x + ' / 10';</p>
+<p class="p1"><span class="Apple-converted-space">                                    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">                                    </span>return label;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>}</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>}</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">                </span>}</p>
+<p class="p1"><span class="Apple-converted-space">            </span>});</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>window.onload = () =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>filterCharacters('all');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>createDynastyChart();</p>
+<p class="p1"><span class="Apple-converted-space">        </span>};</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/script&gt;</p>
+<p class="p1">&lt;/body&gt;</p>
+<p class="p1">&lt;/html&gt;</p>
+</body>
+</html>
